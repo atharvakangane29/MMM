@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UTC Channel Attribution Platform</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+  <style>
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── LOGIN SCREEN (overlays everything) ── -->
+  <div id="screen-login">
+    <!-- populated by JS -->
+  </div>
+
+  <!-- ── APP SHELL ── -->
+  <div id="shell" class="hidden">
+    <div id="app">
+
+      <!-- NAVBAR -->
+      <nav class="navbar">
+        <!-- <a class="navbar-brand" href="#" onclick="return false"> -->
+        <!-- <div class="navbar-logo">UTC</div> -->
+        <img src="assets/img/logo.png" alt="Logo" class="navbar-logo" style="width: 40px; height: auto;">
+        <span class="navbar-wordmark">Circulants</span>
+        </a>
+        <div class="navbar-divider"></div>
+        <span class="navbar-title">Channel Attribution Platform</span>
+        <div class="navbar-actions">
+          <button class="navbar-btn" title="Notifications"
+            onclick="toast.show('No new notifications','info')">🔔</button>
+          <button class="navbar-btn" title="Documentation"
+            onclick="toast.show('Opening documentation…','info')">📖</button>
+          <span class="navbar-user" id="nav-user-name">Jane Smith</span>
+          <div class="navbar-avatar" id="nav-avatar" title="Profile">JS</div>
+          <button class="navbar-btn" title="Sign out" onclick="signOut()">⎋</button>
+        </div>
+      </nav>
+
+      <!-- STEPPER -->
+      <div class="stepper-bar" id="stepper-bar">
+        <!-- populated by stepper.render() -->
+      </div>
+
+      <!-- BODY -->
+      <div class="body-wrap">
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content" id="main-content" style="padding-left:0">
+          <!-- populated by router -->
+        </main>
+
+      </div><!-- /.body-wrap -->
+
+    </div><!-- /#app -->
+
+    <!-- RUNNING DRAWER -->
+    <div class="running-drawer" id="running-drawer">
+      <span style="font-size:14px;color:var(--amber)">⏱</span>
+      <div>
+        <div class="running-drawer-label" id="drawer-scenario-name">Running scenario…</div>
+        <div style="font-size:10px;color:var(--oatmeal)" id="drawer-message">Queued…</div>
+      </div>
+      <div class="running-drawer-progress">
+        <div class="progress-wrap">
+          <div class="progress-fill" id="drawer-progress" style="width:0%"></div>
+        </div>
+      </div>
+      <span class="running-drawer-meta" id="drawer-elapsed">Elapsed: 00:00</span>
+      <button class="running-drawer-close" onclick="runningDrawer.hide()">✕</button>
+    </div>
+
+  </div><!-- /#shell -->
+
+  <!-- ── SCRIPTS ── -->
+  <!-- config.js MUST be first — defines API_BASE_URL -->
+  <script src="src/config.js"></script>
+  <!-- api.js — real fetch client (replaces MOCK calls step by step) -->
+  <script src="src/api.js"></script>
+  <!-- mock-data.js — kept as fallback / schema reference only -->
+  <script src="data/mock-data.js"></script>
+  <script src="src/state.js"></script>
+  <script src="src/Ui.js"></script>
+  <script src="src/charts.js"></script>
+  <script src="src/Screen.js"></script>
+  <script src="src/app.js"></script>
+
+</body>
+
+</html>
