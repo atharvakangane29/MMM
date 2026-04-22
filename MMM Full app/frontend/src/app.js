@@ -24,7 +24,9 @@
 
   router.register('screen-3', () => {
     const html = renderDataReport();
-    setTimeout(initDataReport, 50);
+    setTimeout(() => {
+      try { initDataReport(); } catch(e) { console.warn('Data report init:', e); }
+    }, 100);
     return html;
   });
 

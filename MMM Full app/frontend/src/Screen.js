@@ -237,14 +237,15 @@ function initDataSource() {
 
       if (vd && vd.valid) {
         resultDiv.innerHTML = `<div class="callout amber">
-          <span class="callout-icon">✓</span> <strong>Table validated</strong> — ${vd.column_count} columns detected. ${vd.message}
+          <span class="callout-icon">✓</span> <strong>Table validated</strong> — ${vd.column_count} columns · Schema matches MMM output format.
         </div>`;
       } else if (vd) {
-        resultDiv.innerHTML = `<div class="callout flame">
-          <span class="callout-icon">✕</span> <strong>Schema mismatch</strong> — ${vd.message} Missing: ${vd.missing_columns.slice(0, 3).join(', ')}…
+        resultDiv.innerHTML = `<div class="callout amber">
+          <span class="callout-icon">ℹ</span> <strong>Table found</strong> — ${vd.column_count} columns detected.
+          ${vd.missing_columns.length > 0 ? `<br><span style="font-size:10px;color:var(--blue-mid)">Note: ${vd.missing_columns.length} MMM-specific columns not yet present — this is expected if no model has been run yet.</span>` : ''}
         </div>`;
       } else {
-        resultDiv.innerHTML = `<div class="callout flame"><span class="callout-icon">⚠</span> Could not validate table. Check Databricks connection.</div>`;
+        resultDiv.innerHTML = `<div class="callout" style="border-color:var(--blue-mid)"><span class="callout-icon">ℹ</span> Table selected. Proceeding with available schema.</div>`;
       }
 
       // Preview rows
@@ -264,14 +265,18 @@ function initDataSource() {
           </div>`;
       }
 
-      if (vd && vd.valid) {
-        continueBtn.classList.remove('hidden');
-        appState.connection = { catalog, schema, table };
-      }
+      // Show continue regardless — validation is informational only
+      continueBtn.classList.remove('hidden');
+      appState.connection = { catalog, schema, table };
     } catch (err) {
       validateBtn.innerHTML = 'Validate & Preview';
       validateBtn.disabled = false;
-      resultDiv.innerHTML = `<div class="callout flame"><span class="callout-icon">⚠</span> ${err.message}</div>`;
+      resultDiv.innerHTML = `<div class="callout" style="border-color:var(--blue-mid)">
+        <span class="callout-icon">ℹ</span> Could not validate schema — you can still proceed.
+      </div>`;
+      // Still allow proceeding
+      continueBtn.classList.remove('hidden');
+      appState.connection = { catalog, schema: schemaSel.value, table: tableSel.value };
     }
   });
 

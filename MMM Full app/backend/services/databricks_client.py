@@ -78,22 +78,15 @@ def list_tables(settings: Settings, catalog: str, schema: str) -> List[Dict[str,
     result = []
     for r in rows:
         table_name = r.get("tableName", "")
-        # Fetch basic stats for each table
-        try:
-            stats = _run_query(
-                settings,
-                f"DESCRIBE DETAIL `{catalog}`.`{schema}`.`{table_name}`",
-            )
-            s = stats[0] if stats else {}
-            result.append({
-                "name": table_name,
-                "row_count": s.get("numRows") or 0,
-                "column_count": _count_columns(settings, catalog, schema, table_name),
-                "last_modified": str(s.get("lastModified") or ""),
-                "size_bytes": s.get("sizeInBytes") or 0,
-            })
-        except Exception:
-            result.append({"name": table_name, "row_count": None, "column_count": None, "last_modified": None, "size_bytes": None})
+        if not table_name:
+            continue
+        result.append({
+            "name": table_name,
+            "row_count": None,
+            "column_count": None,
+            "last_modified": None,
+            "size_bytes": None,
+        })
     return result
 
 
